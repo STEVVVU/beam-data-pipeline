@@ -1,0 +1,18 @@
+{
+  "kind": "documentation-only schema figure",
+  "schemas": {
+    "customers": "customer_id:STRING,name:STRING,region:STRING",
+    "products": "product_id:STRING,name:STRING,category:STRING,price_cents:INTEGER",
+    "orders": "order_id:STRING,customer_id:STRING,product_id:STRING,order_date:DATE,quantity:INTEGER"
+  },
+  "compile": "pdflatex exit0, one page, no box warnings",
+  "render": "pdftoppm PNG inspected with view_image",
+  "schema_check": "exact TeX identifiers and extracted field/type text checked; pdftotext renders drawn underscores as spaces; two cardinality edges checked",
+  "no_product_or_benchmark_changes": true,
+  "files": {
+    "final_project_datamart.tex": "db2775cabffa88be9f5ab3bff819c3c0a420a3e556dfb16aafbbf2e608d5d987",
+    "final_project_datamart.pdf": "13085ea2ba08e466b1da55dde684569a62e7c138d84c7db03c6b73ac2e9018ab",
+    "evidence/datamart-graphical.png": "b919c8aa233c909ced63920fe465a5f5fe1451bd45c7cf8e6ae4fe5250d4b21a",
+    "evidence/datamart-graphical.txt": "4bb127c8fc54f15c1a4b1a6fe395c7eddd08fbf71e09178d3afaea51a9477f20"
+  }
+}

@@ -1,22 +1,77 @@
 \documentclass{article}
 \usepackage[margin=1in]{geometry}
+\pagestyle{empty}
 \begin{document}
 \section*{Sales datamart: transformed tables}
-\begin{tabular}{|l|l|l|}\hline
-Table & Field & Type / key \\ \hline
-customers\_Dataflow & customer\_id & STRING, primary key \\
- & name, region & STRING \\ \hline
-products\_Dataflow & product\_id & STRING, primary key \\
- & name, category & STRING \\
- & price\_cents & INT64, cents \\ \hline
-orders\_Dataflow & order\_id & STRING, primary key \\
- & customer\_id & STRING, foreign key to customers \\
- & product\_id & STRING, foreign key to products \\
- & order\_date & DATE \\
- & quantity & INT64 \\ \hline
-\end{tabular}
+\noindent Entity--relationship diagram for the tables emitted by the Beam
+normalization graph. The same schema is used by the local report checks and
+the configured BigQuery sink. PK means primary key; FK means foreign key.
+
+\begin{center}
+\setlength{\unitlength}{1pt}
+\begin{picture}(450,330)
+\put(0,220){\framebox(205,105){}}
+\put(0,299){\line(1,0){205}}
+\put(0,299){\makebox(205,26){\textbf{customers\_Dataflow}}}
+\put(9,229){\parbox[b][62pt][t]{190pt}{\small
+  \begin{tabular}{@{}lll@{}}
+    \texttt{customer\_id} & STRING & PK \\
+    \texttt{name} & STRING & \\
+    \texttt{region} & STRING &
+  \end{tabular}}}
+
+\put(245,220){\framebox(205,105){}}
+\put(245,299){\line(1,0){205}}
+\put(245,299){\makebox(205,26){\textbf{products\_Dataflow}}}
+\put(254,229){\parbox[b][62pt][t]{190pt}{\small
+  \begin{tabular}{@{}lll@{}}
+    \texttt{product\_id} & STRING & PK \\
+    \texttt{name} & STRING & \\
+    \texttt{category} & STRING & \\
+    \texttt{price\_cents} & INT64 &
+  \end{tabular}}}
+
+\put(112,0){\framebox(225,140){}}
+\put(112,114){\line(1,0){225}}
+\put(112,114){\makebox(225,26){\textbf{orders\_Dataflow}}}
+\put(121,9){\parbox[b][97pt][t]{208pt}{\small
+  \begin{tabular}{@{}lll@{}}
+    \texttt{order\_id} & STRING & PK \\
+    \texttt{customer\_id} & STRING & FK \\
+    \texttt{product\_id} & STRING & FK \\
+    \texttt{order\_date} & DATE & \\
+    \texttt{quantity} & INT64 &
+  \end{tabular}}}
+
+\put(102,220){\line(0,-1){44}}
+\put(102,176){\line(1,0){65}}
+\put(167,176){\vector(0,-1){36}}
+\put(111,201){\makebox(32,14)[l]{1}}
+\put(173,147){\makebox(36,14)[l]{0..*}}
+\put(112,180){\makebox(75,14)[l]{\small places}}
+
+\put(347,220){\line(0,-1){44}}
+\put(282,176){\line(1,0){65}}
+\put(282,176){\vector(0,-1){36}}
+\put(320,201){\makebox(18,14)[r]{1}}
+\put(242,147){\makebox(34,14)[r]{0..*}}
+\put(263,180){\makebox(75,14)[r]{\small appears in}}
+\end{picture}
+\end{center}
 
 Each customer can place many orders; each product can appear in many orders.
-Each order references exactly one customer and one product. Foreign-key checks
-identify unresolved references before reports are interpreted.
+Each order references exactly one customer and one product. The arrows point
+from each parent to its child table. A parent can have zero or many orders.
+
+\paragraph{Integrity boundary.} These are logical relationships checked by
+\texttt{reports.py} and \texttt{sql/bigquery.sql}, not automatically enforced
+BigQuery foreign-key constraints. The fixture intentionally contains one
+orphan customer reference; the check reports it, and inner-join reports
+exclude that order. Duplicate or conflicting source keys are resolved or
+rejected before this reporting stage.
+
+\paragraph{Money.} \texttt{price\_cents} is the normalized integer-cent value,
+not the original raw price string. Revenue multiplies it by the order
+quantity with explicit numeric-range checks. No cloud execution is implied
+by this schema diagram.
 \end{document}

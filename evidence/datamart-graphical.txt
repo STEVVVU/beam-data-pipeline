@@ -1,0 +1,47 @@
+Sales datamart: transformed tables
+Entity–relationship diagram for the tables emitted by the Beam normalization graph. The same schema is
+used by the local report checks and the configured BigQuery sink. PK means primary key; FK means foreign
+key.
+
+
+              customers Dataflow                                          products Dataflow
+
+    customer id   STRING        PK                           product id      STRING   PK
+    name          STRING                                     name            STRING
+    region        STRING                                     category        STRING
+                                                             price cents     INT64
+
+
+
+
+                            1                                                    1
+
+                            places                                       appears in
+
+
+                                          0..*                0..*
+                                         ?                           ?
+                                              orders Dataflow
+
+                                order id      STRING    PK
+                                customer id   STRING    FK
+                                product id    STRING    FK
+                                order date    DATE
+                                quantity      INT64
+
+
+
+
+   Each customer can place many orders; each product can appear in many orders. Each order references
+exactly one customer and one product. The arrows point from each parent to its child table. A parent can
+have zero or many orders.
+
+Integrity boundary. These are logical relationships checked by reports.py and sql/bigquery.sql, not
+automatically enforced BigQuery foreign-key constraints. The fixture intentionally contains one orphan
+customer reference; the check reports it, and inner-join reports exclude that order. Duplicate or conflicting
+source keys are resolved or rejected before this reporting stage.
+
+Money. price cents is the normalized integer-cent value, not the original raw price string. Revenue
+multiplies it by the order quantity with explicit numeric-range checks. No cloud execution is implied by this
+schema diagram.
+
