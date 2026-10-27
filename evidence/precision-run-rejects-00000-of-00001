@@ -1,0 +1,1 @@
+{"source": "products", "raw": "{\"product_id\":\"invalid\",\"name\":\"Invalid\",\"category\":\"Test\",\"price\":Infinity}", "reason": "price must fit nonnegative INT64 cents with at most two decimals"}

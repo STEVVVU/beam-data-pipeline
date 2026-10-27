@@ -1,0 +1,14 @@
+-- Replace PROJECT and DATASET with identifiers you own. Execute deliberately.
+-- Primary key violations: each result must be empty.
+SELECT customer_id, COUNT(*) n FROM `PROJECT.DATASET.customers_Dataflow` GROUP BY customer_id HAVING customer_id IS NULL OR n > 1;
+SELECT product_id, COUNT(*) n FROM `PROJECT.DATASET.products_Dataflow` GROUP BY product_id HAVING product_id IS NULL OR n > 1;
+SELECT order_id, COUNT(*) n FROM `PROJECT.DATASET.orders_Dataflow` GROUP BY order_id HAVING order_id IS NULL OR n > 1;
+-- Foreign key violations: each result must be empty.
+SELECT o.order_id FROM `PROJECT.DATASET.orders_Dataflow` o LEFT JOIN `PROJECT.DATASET.customers_Dataflow` c USING(customer_id) WHERE c.customer_id IS NULL;
+SELECT o.order_id FROM `PROJECT.DATASET.orders_Dataflow` o LEFT JOIN `PROJECT.DATASET.products_Dataflow` p USING(product_id) WHERE p.product_id IS NULL;
+-- Revenue by region joins transactions to both dimensions.
+CREATE VIEW `PROJECT.reports.region_revenue` AS SELECT c.region, SUM(CAST(o.quantity AS BIGNUMERIC)*p.price_cents) revenue_cents FROM `PROJECT.DATASET.orders_Dataflow` o JOIN `PROJECT.DATASET.customers_Dataflow` c USING(customer_id) JOIN `PROJECT.DATASET.products_Dataflow` p USING(product_id) GROUP BY c.region;
+-- Units by product category for orders with known customers.
+CREATE VIEW `PROJECT.reports.category_units` AS SELECT p.category, SUM(o.quantity) units FROM `PROJECT.DATASET.orders_Dataflow` o JOIN `PROJECT.DATASET.customers_Dataflow` c USING(customer_id) JOIN `PROJECT.DATASET.products_Dataflow` p USING(product_id) GROUP BY p.category;
+-- Spend per customer using the normalized product price.
+CREATE VIEW `PROJECT.reports.customer_spend` AS SELECT c.customer_id, c.name, SUM(CAST(o.quantity AS BIGNUMERIC)*p.price_cents) spend_cents FROM `PROJECT.DATASET.orders_Dataflow` o JOIN `PROJECT.DATASET.customers_Dataflow` c USING(customer_id) JOIN `PROJECT.DATASET.products_Dataflow` p USING(product_id) GROUP BY c.customer_id,c.name;

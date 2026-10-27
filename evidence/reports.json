@@ -1,0 +1,43 @@
+{
+  "checks": {
+    "customers_duplicate_keys": 0,
+    "products_duplicate_keys": 0,
+    "orders_duplicate_keys": 0,
+    "missing_customers": 1,
+    "missing_products": 0
+  },
+  "reports": {
+    "region_revenue": [
+      [
+        "North",
+        5.0
+      ],
+      [
+        "South",
+        8
+      ]
+    ],
+    "category_units": [
+      [
+        "Home",
+        1
+      ],
+      [
+        "Office",
+        2
+      ]
+    ],
+    "customer_spend": [
+      [
+        "C1",
+        "Ada",
+        5.0
+      ],
+      [
+        "C2",
+        "Bo",
+        8
+      ]
+    ]
+  }
+}

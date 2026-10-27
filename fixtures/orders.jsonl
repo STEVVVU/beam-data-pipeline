@@ -1,0 +1,7 @@
+{"order_id":"O1","customer_id":"C1","product_id":"P1","order_date":"2024-01-02","quantity":2}
+{"order_id":"O1","customer_id":"C1","product_id":"P1","order_date":"2024-01-02","quantity":2}
+{"order_id":"O2","customer_id":"C2","product_id":"P2","order_date":"2024-02-03","quantity":1}
+{"order_id":"O3","customer_id":"C9","product_id":"P1","order_date":"2024-02-03","quantity":1}
+{"order_id":"O4","customer_id":"C1","product_id":"P1","order_date":"bad","quantity":1}
+{"order_id":"O5","customer_id":"C1","product_id":"P1","order_date":"2024-02-03","quantity":1}
+{"order_id":"O5","customer_id":"C1","product_id":"P1","order_date":"2024-02-03","quantity":2}

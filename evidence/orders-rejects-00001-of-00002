@@ -1,0 +1,1 @@
+{"source": "orders", "raw": "{\"order_id\":\"O4\",\"customer_id\":\"C1\",\"product_id\":\"P1\",\"order_date\":\"bad\",\"quantity\":1}", "reason": "Invalid isoformat string: 'bad'"}

@@ -1,0 +1,22 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+\section*{Sales datamart: transformed tables}
+\begin{tabular}{|l|l|l|}\hline
+Table & Field & Type / key \\ \hline
+customers\_Dataflow & customer\_id & STRING, primary key \\
+ & name, region & STRING \\ \hline
+products\_Dataflow & product\_id & STRING, primary key \\
+ & name, category & STRING \\
+ & price\_cents & INT64, cents \\ \hline
+orders\_Dataflow & order\_id & STRING, primary key \\
+ & customer\_id & STRING, foreign key to customers \\
+ & product\_id & STRING, foreign key to products \\
+ & order\_date & DATE \\
+ & quantity & INT64 \\ \hline
+\end{tabular}
+
+Each customer can place many orders; each product can appear in many orders.
+Each order references exactly one customer and one product. Foreign-key checks
+identify unresolved references before reports are interpreted.
+\end{document}

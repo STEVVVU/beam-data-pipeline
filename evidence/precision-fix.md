@@ -1,0 +1,5 @@
+# Numeric price precision regression
+
+Before the fix, `parse` returned 10000000000000002 cents for JSON numeric token `100000000000000.01`; expected 10000000000000001. The input was first decoded as binary float by `json.loads`, then converted to Decimal from its already rounded string. The shared parser now uses `parse_float=Decimal`, preserving the decimal token before validation and conversion to integer cents.
+
+On Python 3.11.9 and Beam 2.69.0, `.venv/Scripts/python -m pipeline --source products --input evidence/precision-input.jsonl --output evidence/precision-run` exited 0. The adjacent output files show both numeric and string large prices as 10000000000000001 cents, numeric 0.29 as 29 cents, and Infinity rejected. `python -m pytest -q --disable-warnings`: 13 passed; `python -m ruff check .`: passed. Other `json.loads` calls consume normalized records with integer cents, so they do not convert source monetary tokens to float. Prior benchmark receipts retain their original source hashes and were not rerun for this localized ingestion fix. SHA-256 of fixed `pipeline.py`: `7061537e60ad4252b27157e5315afe20185ddd22be199723d68cb0f852f066eb`.

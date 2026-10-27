@@ -1,0 +1,3 @@
+{"customer_id": "C1", "order_date": "2024-01-02", "order_id": "O1", "product_id": "P1", "quantity": 2}
+{"customer_id": "C2", "order_date": "2024-02-03", "order_id": "O2", "product_id": "P2", "quantity": 1}
+{"customer_id": "C9", "order_date": "2024-02-03", "order_id": "O3", "product_id": "P1", "quantity": 1}

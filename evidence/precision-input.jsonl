@@ -1,0 +1,4 @@
+{"product_id":"numeric-large","name":"Numeric","category":"Test","price":100000000000000.01}
+{"product_id":"string-large","name":"String","category":"Test","price":"100000000000000.01"}
+{"product_id":"numeric-small","name":"Small","category":"Test","price":0.29}
+{"product_id":"invalid","name":"Invalid","category":"Test","price":Infinity}
